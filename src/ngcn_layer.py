@@ -53,7 +53,6 @@ class NGCNLayer(torch.nn.Module):
             base_features = spmm(normalized_adjacency_matrix["indices"], normalized_adjacency_matrix["values"], base_features.shape[0], base_features)
         return base_features
 
-
 class ListModule(torch.nn.Module):
     def __init__(self, *args):
         super(ListModule, self).__init__()
