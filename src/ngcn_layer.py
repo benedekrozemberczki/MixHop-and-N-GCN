@@ -62,6 +62,9 @@ class ListModule(torch.nn.Module):
     Abstract list layer class.
     """
     def __init__(self, *args):
+        """
+        Module initializing.
+        """
         super(ListModule, self).__init__()
         idx = 0
         for module in args:
