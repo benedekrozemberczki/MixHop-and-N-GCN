@@ -79,16 +79,12 @@ The following commands learn a neural network and score on the test set. Trainin
 python src/main.py
 ```
 <p align="center">
-<img style="float: center;" src="appnp_run.jpg">
+<img style="float: center;" src="ngcn_run.jpg">
 </p>
 
 Training a PPNP model for a 100 epochs.
 ```
 python src/main.py --epochs 100
-```
-Training an APPNP model.
-```
-python src/main.py --model approximate
 ```
 Increasing the learning rate and the dropout.
 ```
