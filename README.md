@@ -10,9 +10,9 @@ Recent methods generalize convolutional layers from Euclidean domains to graph-s
 This repository provides a PyTorch implementation of NGCN as described in the paper:
 
 > A Higher-Order Graph Convolutional Layer.
-> Johannes Klicpera, Aleksandar Bojchevski, Stephan Günnemann.
-> ICLR, 2019.
-> [[Paper]](https://arxiv.org/abs/1810.05997)
+> Sami A Abu-El-Haija, Bryan Perozzi, Amol Kapoor, Nazanin Alipourfard, Hrayr Harutyunyan.
+> NeurIPS, 2018.
+> [[Paper]](http://sami.haija.org/papers/high-order-gc-layer.pdf)
 
 ### Requirements
 The codebase is implemented in Python 3.5.2. package versions used for development are just below.
