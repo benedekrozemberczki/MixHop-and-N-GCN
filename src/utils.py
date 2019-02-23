@@ -84,8 +84,12 @@ def normalize_adjacency_matrix(A, I):
     A_tilde_hat = D.dot(A_tilde).dot(D)
     return A_tilde_hat
 
-
 def create_propagator_matrix(graph):
+    """
+    Creating a propagator matrix.
+    :param graph: NetworkX graph.
+    :return propagator: Dictionary of matrix indices and values. 
+    """
     A = create_adjacency_matrix(graph)
     I = sparse.eye(A.shape[0])
     A_tilde_hat = normalize_adjacency_matrix(A, I)
