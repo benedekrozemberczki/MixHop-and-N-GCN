@@ -54,7 +54,7 @@ The **target vector** is a csv with two columns and headers, the first contains 
 | n | 3 |
 
 ### Options
-Training an APPNP/PPNP model is handled by the `src/main.py` script which provides the following command line arguments.
+Training an NGCN model is handled by the `src/main.py` script which provides the following command line arguments.
 
 #### Input and output options
 ```
@@ -82,11 +82,15 @@ python src/main.py
 <img style="float: center;" src="ngcn_run.jpg">
 </p>
 
-Training a PPNP model for a 100 epochs.
+Training an NGCN model for a 100 epochs.
 ```
 python src/main.py --epochs 100
 ```
 Increasing the learning rate and the dropout.
 ```
 python src/main.py --learning-rate 0.1 --dropout 0.9
+```
+Training a two layer model:
+```
+python src/main.py --layers 64 64
 ```
