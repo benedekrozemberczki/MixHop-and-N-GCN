@@ -5,13 +5,11 @@ A PyTorch implementation of "A Higher-Order Graph Convolutional Layer" (NeurIPS 
   <img width="800" src="ppnp.jpg">
 </p>
 <p align="justify">
-Neural message passing algorithms for semi-supervised classification on graphs have recently achieved great success. However, these methods only consider nodes that are a few propagation steps away and the size of this utilized neighborhood cannot be easily extended. In this paper, we use the relationship between graph convolutional networks (GCN) and PageRank to derive an improved propagation scheme based on personalized PageRank. We utilize this propagation procedure to construct personalized propagation of neural predictions (PPNP) and its approximation, APPNP. Our model's training time is on par or faster and its number of parameters on par or lower than previous models. It leverages a large, adjustable neighborhood for classification and can be combined with any neural network. We show that this model outperforms several recently proposed methods for semi-supervised classification on multiple graphs in the most thorough study done so far for GCN-like models.</p>
+Recent methods generalize convolutional layers from Euclidean domains to graph-structured data by approximating the eigenbasis of the graph Laplacian. The computationally-efficient and broadly-used Graph ConvNet of Kipf & Welling, over-simplifies the approximation, effectively rendering graph convolution as a neighborhood-averaging operator. This simplification restricts the model from learning delta operators, the very premise of the graph Laplacian.  In this work, we propose a new Graph Convolutional layer which mixes multiple powers of the adjacency matrix, allowing it to learn delta operators. Our layer exhibits the same memory footprint and computational complexity as a GCN. We illustrate the strength of our proposed layer on both synthetic graph datasets, and on several real-world citation graphs, setting the record state-of-the-art on Pubmed.</p>
 
-A Tensorflow implementation is awailable [[here.]](https://github.com/klicperajo/ppnp).
+This repository provides a PyTorch implementation of NGCN as described in the paper:
 
-This repository provides a PyTorch implementation of PPNP and APPNP as described in the paper:
-
-> Combining Neural Networks with Personalized PageRank for Classification on Graphs.
+> A Higher-Order Graph Convolutional Layer.
 > Johannes Klicpera, Aleksandar Bojchevski, Stephan Günnemann.
 > ICLR, 2019.
 > [[Paper]](https://arxiv.org/abs/1810.05997)
