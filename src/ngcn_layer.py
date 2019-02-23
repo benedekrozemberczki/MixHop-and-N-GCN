@@ -14,7 +14,7 @@ def uniform(size, tensor):
 
 class NGCNLayer(torch.nn.Module):
     """
-
+    Multi-scale GCN layer.
     """
     def __init__(self, in_channels, out_channels, iterations, dropout_rate):
         super(NGCNLayer, self).__init__()
