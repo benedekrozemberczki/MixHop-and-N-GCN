@@ -44,7 +44,7 @@ class NGCNLayer(torch.nn.Module):
         Doing a forward pass.
         :param normalized_adjacency_matrix: Normalized adjacency matrix.
         :param features: Feature matrix.
-        :return localized_features: Convolved features.
+        :return base_features: Convolved features.
         """
         base_features = spmm(features["indices"], features["values"], features["dimensions"][0],  self.weight_matrix)
         base_features = torch.nn.functional.dropout(base_features, p = self.dropout_rate, training = self.training)
