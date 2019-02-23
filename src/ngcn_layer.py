@@ -58,6 +58,9 @@ class NGCNLayer(torch.nn.Module):
         return base_features
 
 class ListModule(torch.nn.Module):
+    """
+    Abstract list layer class.
+    """
     def __init__(self, *args):
         super(ListModule, self).__init__()
         idx = 0
@@ -66,6 +69,9 @@ class ListModule(torch.nn.Module):
             idx += 1
 
     def __getitem__(self, idx):
+        """
+        Getting the indexed layer.
+        """
         if idx < 0 or idx >= len(self._modules):
             raise IndexError('index {} is out of range'.format(idx))
         it = iter(self._modules.values())
@@ -74,6 +80,9 @@ class ListModule(torch.nn.Module):
         return next(it)
 
     def __iter__(self):
+        """
+        Iterating on the layers.
+        """
         return iter(self._modules.values())
 
     def __len__(self):
