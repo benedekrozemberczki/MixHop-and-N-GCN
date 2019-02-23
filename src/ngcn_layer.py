@@ -86,4 +86,7 @@ class ListModule(torch.nn.Module):
         return iter(self._modules.values())
 
     def __len__(self):
+        """
+        Number of layers.
+        """
         return len(self._modules)
