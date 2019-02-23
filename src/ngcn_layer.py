@@ -15,10 +15,10 @@ def uniform(size, tensor):
 class NGCNLayer(torch.nn.Module):
     """
     Multi-scale GCN layer.
-    :param in_channels:
-    :param out_channels:
-    :param iterations:
-    :param dropout_rate:
+    :param in_channels: Number of features.
+    :param out_channels: Number of filters.
+    :param iterations: Adjacency matrix power order.
+    :param dropout_rate: Dropout value.
     """
     def __init__(self, in_channels, out_channels, iterations, dropout_rate):
         super(NGCNLayer, self).__init__()
