@@ -40,7 +40,6 @@ The **feature matrix** is a sparse binary one it is stored as a json. Nodes are 
   ...
   n: [2018, 10000]}
 ```
-
 The **target vector** is a csv with two columns and headers, the first contains the node identifiers the second the targets. This csv is sorted by node identifiers and the target column contains the class meberships indexed from zero. 
 
 | **NODE ID**| **Target** |
