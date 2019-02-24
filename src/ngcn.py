@@ -38,8 +38,6 @@ class NGCNNetwork(torch.nn.Module):
         predictions =  torch.nn.functional.log_softmax(self.fully_connected(abstract_features),dim=1)
         return predictions
 
-
-
 class NGCNTrainer(object):
     """
     Class for training the neural network.
