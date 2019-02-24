@@ -26,7 +26,6 @@ scipy             1.1.0
 argparse          1.1.0
 torch             0.4.1
 torch-sparse      0.2.2
-scikit-learn      0.20.0
 ```
 ### Datasets
 
