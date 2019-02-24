@@ -31,9 +31,9 @@ class NGCNNetwork(torch.nn.Module):
     def forward(self, normalized_adjacency_matrix, features):
         """
         Forward pass.
-        :param normalized adjacency_matrix:
-        :param features:
-        :return predictions:
+        :param normalized adjacency_matrix: Target matrix as a dict with indices and values.
+        :param features: Feature matrix.
+        :return predictions: Label predictions.
         """
         abstract_features = torch.cat([self.main_layers[i](normalized_adjacency_matrix, features) for i in range(self.order)],dim=1)
         predictions =  torch.nn.functional.log_softmax(self.fully_connected(abstract_features),dim=1)
