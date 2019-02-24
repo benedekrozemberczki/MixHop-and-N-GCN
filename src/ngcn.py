@@ -21,7 +21,7 @@ class NGCNNetwork(torch.nn.Module):
 
     def setup_layer_structure(self):
         """
-        Creating the layer structure (3 convolutional layers).
+        Creating the layer structure (3 convolutional layers) and dense final.
         """
         self.main_layers = [NGCNLayer(self.feature_number, self.args.layers[i-1], i, self.args.dropout) for i in range(1, self.order+1)]
         self.main_layers = ListModule(*self.main_layers)
@@ -29,6 +29,12 @@ class NGCNNetwork(torch.nn.Module):
 
 
     def forward(self, normalized_adjacency_matrix, features):
+        """
+        Forward pass.
+        :param normalized adjacency_matrix:
+        :param features:
+        :return predictions:
+        """
         abstract_features = torch.cat([self.main_layers[i](normalized_adjacency_matrix, features) for i in range(self.order)],dim=1)
         predictions =  torch.nn.functional.log_softmax(self.fully_connected(abstract_features),dim=1)
         return predictions
