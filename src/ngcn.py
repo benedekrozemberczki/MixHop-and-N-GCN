@@ -27,7 +27,6 @@ class NGCNNetwork(torch.nn.Module):
         self.main_layers = ListModule(*self.main_layers)
         self.fully_connected = torch.nn.Linear(sum(self.args.layers), self.class_number)
 
-
     def forward(self, normalized_adjacency_matrix, features):
         """
         Forward pass.
