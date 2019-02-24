@@ -5,8 +5,13 @@ from utils import create_propagator_matrix
 from ngcn_layer import NGCNLayer, ListModule
 
 class NGCNNetwork(torch.nn.Module):
+    """
+    Higher Order Graph Convolutional Model.
+    :param args: Arguments object.
+    :param feature_number: Feature input number.
+    :param class_number: Target class number.
+    """
     def __init__(self, args, feature_number, class_number):
-
         super(NGCNNetwork, self).__init__()
         self.args = args
         self.feature_number = feature_number
