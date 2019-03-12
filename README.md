@@ -19,13 +19,9 @@ The codebase is implemented in Python 3.5.2. package versions used for developme
 ```
 networkx          1.11
 tqdm              4.28.1
-numpy             1.15.4
 pandas            0.23.4
 texttable         1.5.0
-scipy             1.1.0
 argparse          1.1.0
-torch             0.4.1
-torch-sparse      0.2.2
 ```
 ### Datasets
 
