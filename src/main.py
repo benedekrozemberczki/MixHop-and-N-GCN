@@ -5,7 +5,7 @@ from utils import tab_printer, graph_reader, feature_reader, target_reader
 
 def main():
     """
-    Parsing command line parameters, reading data, fitting an APPNP/PPNP and scoring the model.
+    Parsing command line parameters, reading data, fitting an NGCN and scoring the model.
     """
     args = parameter_parser()
     torch.manual_seed(args.seed)
