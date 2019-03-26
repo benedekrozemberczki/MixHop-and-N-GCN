@@ -47,7 +47,6 @@ def feature_reader(path):
     out_features["dimensions"] = features.shape
     return out_features
 
-
 def target_reader(path):
     """
     Reading the target vector from disk.
