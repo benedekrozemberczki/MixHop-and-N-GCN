@@ -58,7 +58,7 @@ The **target vector** is a csv with two columns and headers, the first contains 
 | n | 3 |
 
 ### Options
-Training an NGCN model is handled by the `src/main.py` script which provides the following command line arguments.
+Training an N-GCN/MixHop model is handled by the `src/main.py` script which provides the following command line arguments.
 
 #### Input and output options
 ```
