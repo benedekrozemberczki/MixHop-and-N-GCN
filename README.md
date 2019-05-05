@@ -85,7 +85,7 @@ python src/main.py
 <img style="float: center;" src="ngcn_run.jpg">
 </p>
 
-Training an NGCN model for a 100 epochs.
+Training an N-GCN (Mix-Hop) model for a 100 epochs.
 ```
 python src/main.py --epochs 100
 ```
