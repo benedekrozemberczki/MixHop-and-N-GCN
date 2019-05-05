@@ -6,7 +6,7 @@ def parameter_parser():
     The default hyperparameters give a good quality representation without grid search.
     """
 
-    parser = argparse.ArgumentParser(description = "Run NGCN.")
+    parser = argparse.ArgumentParser(description = "Run MixHop/N-GCN.")
 
     parser.add_argument("--edge-path",
                         nargs = "?",
