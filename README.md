@@ -9,9 +9,9 @@ Recent methods generalize convolutional layers from Euclidean domains to graph-s
 
 This repository provides a PyTorch implementation of MixHop and N-GCN as described in the papers:
 
-> A Higher-Order Graph Convolutional Layer.
+> MixHop: Higher-Order Graph Convolutional Architecturesvia Sparsified Neighborhood Mixing
 > Sami A Abu-El-Haija, Bryan Perozzi, Amol Kapoor, Nazanin Alipourfard, Hrayr Harutyunyan.
-> NeurIPS, 2018.
+> ICML, 2019.
 > [[Paper]](http://sami.haija.org/papers/high-order-gc-layer.pdf)
 
 > A Higher-Order Graph Convolutional Layer.
