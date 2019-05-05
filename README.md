@@ -1,6 +1,6 @@
 N-GCN and MixHop
 ============================================
-A PyTorch implementation of "MixHop: Higher-Order Graph Convolutional Architecturesvia Sparsified Neighborhood Mixing" (ICML 2019) and "A Higher-Order Graph Convolutional Layer" (NeurIPS 2018).
+A PyTorch implementation of "MixHop: Higher-Order Graph Convolutional Architectures via Sparsified Neighborhood Mixing" (ICML 2019) and "A Higher-Order Graph Convolutional Layer" (NeurIPS 2018).
 <p align="center">
   <img width="800" src="ngcn.jpg">
 </p>
