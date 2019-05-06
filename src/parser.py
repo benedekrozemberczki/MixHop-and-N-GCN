@@ -66,7 +66,7 @@ def parameter_parser():
     parser.add_argument("--lambd",
                         type = float,
                         default = 0.0001,
-	                help = "L2 regularization coefficient. Default is 0.01.")
+	                help = "L2 regularization coefficient. Default is 0.0001.")
 
     parser.add_argument("--layers",
                         nargs="+",
