@@ -86,7 +86,7 @@ python src/main.py
 <img style="float: center;" src="mixhop.gif">
 </p>
 
-Training an N-GCN (MixHop) model for a 100 epochs.
+Training a MixHop model for a 100 epochs.
 ```
 python src/main.py --epochs 100
 ```
@@ -94,7 +94,11 @@ Increasing the learning rate and the dropout.
 ```
 python src/main.py --learning-rate 0.1 --dropout 0.9
 ```
-Training a two layer model:
+Training a model with diffusion order 2:
 ```
 python src/main.py --layers 64 64
+```
+Training an N-GCN model:
+```
+python src/main.py --model ngcn
 ```
