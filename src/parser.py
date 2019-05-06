@@ -20,7 +20,7 @@ def parameter_parser():
 
     parser.add_argument("--epochs",
                         type = int,
-                        default = 20,
+                        default = 10,
 	                help = "Number of training epochs. Default is 100.")
 
     parser.add_argument("--batch-size",
@@ -30,7 +30,7 @@ def parameter_parser():
 
     parser.add_argument("--number_of_evaluation_points",
                         type = int,
-                        default = 20,
+                        default = 30,
 	                help = "Number of Graph Convolutional filters. Default is 20.")
 
     parser.add_argument("--order",
@@ -60,7 +60,7 @@ def parameter_parser():
 
     parser.add_argument("--weight-decay",
                         type = float,
-                        default = 10**-6,
+                        default = 10**-4,
 	                help = "Weight decay. Default is 10^-6.")
 
     parser.add_argument("--learning-rate",
@@ -71,7 +71,7 @@ def parameter_parser():
 
     parser.add_argument("--test-size",
                         type = float,
-                        default = 0.33,
+                        default = 0.1,
 	                help = "Reconstruction loss weight. Default is 0.1.")
     
     return parser.parse_args()

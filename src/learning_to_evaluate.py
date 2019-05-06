@@ -96,5 +96,6 @@ class CharacteristicFunctionNetworkTrainer(object):
             prediction,x = self.model(feature_matrix).max(1)
             predictions.append(x == target)
         predictions = sum([p.item() for p in predictions])/len(self.test_graphs)
+        print("\n")
         print(predictions)
     
