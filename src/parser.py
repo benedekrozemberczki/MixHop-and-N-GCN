@@ -31,7 +31,7 @@ def parameter_parser():
     parser.add_argument("--epochs",
                         type = int,
                         default = 2000,
-	                help = "Number of training epochs. Default is 200.")
+	                help = "Number of training epochs. Default is 2000.")
 
     parser.add_argument("--seed",
                         type = int,
@@ -41,7 +41,7 @@ def parameter_parser():
     parser.add_argument("--early-stopping",
                         type = int,
                         default = 10,
-	                help = "Number of early stopping rounds. Default is 5.")
+	                help = "Number of early stopping rounds. Default is 10.")
 
     parser.add_argument("--training-size",
                         type = int,
