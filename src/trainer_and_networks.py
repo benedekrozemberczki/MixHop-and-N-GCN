@@ -90,7 +90,6 @@ class MixHopNetwork(torch.nn.Module):
         predictions =  torch.nn.functional.log_softmax(self.fully_connected(abstract_features_2),dim=1)
         return predictions
 
-
 class Trainer(object):
     """
     Class for training the neural network.
@@ -136,6 +135,7 @@ class Trainer(object):
             self.model = MixHopNetwork(self.args, self.feature_number, self.class_number)
         else:
             self.model = NGCNNetwork(self.args, self.feature_number, self.class_number)
+            
     def fit(self):
         """
         Fitting a neural network with early stopping.
