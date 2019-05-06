@@ -1,76 +1,140 @@
+import math
 import torch
-import random
-from tqdm import tqdm
+from torch_sparse import spmm
 
-class LearningToEvaluateLayer(torch.nn.Module):
+def uniform(size, tensor):
+    """
+    Uniform weight initialization.
+    :param size: Size of the tensor.
+    :param tensor: Tensor initialized.
+    """
+    stdv = 1.0 / math.sqrt(size)
+    if tensor is not None:
+        tensor.data.uniform_(-stdv, stdv)
 
-    def __init__(self, number_of_evaluation_points, order):
-        super(LearningToEvaluateLayer, self).__init__()
-        self.number_of_evaluation_points = number_of_evaluation_points
-        self.order = order
-        self._setup_weights()
-        
+class SparseNGCNLayer(torch.nn.Module):
+    """
+    Multi-scale Sparse Feature Matrix GCN layer.
+    :param in_channels: Number of features.
+    :param out_channels: Number of filters.
+    :param iterations: Adjacency matrix power order.
+    :param dropout_rate: Dropout value.
+    """
+    def __init__(self, in_channels, out_channels, iterations, dropout_rate):
+        super(SparseNGCNLayer, self).__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.iterations = iterations
+        self.dropout_rate = dropout_rate
+        self.define_parameters()
+        self.init_parameters()
 
-    def _setup_weights(self):
-        self.weight_matrix = torch.nn.Parameter(torch.Tensor(self.order,self.number_of_evaluation_points))
-        torch.nn.init.uniform_(self.weight_matrix,-1000,1000) 
+    def define_parameters(self):
+        """
+        Defining the weight matrices.
+        """
+        self.weight_matrix = torch.nn.Parameter(torch.Tensor(self.in_channels, self.out_channels))
+        self.bias = torch.nn.Parameter(torch.Tensor(self.out_channels))
 
+    def init_parameters(self):
+        """
+        Initializing weights.
+        """
+        torch.nn.init.xavier_uniform_(self.weight_matrix)
+        uniform(self.out_channels,self.bias)
 
-    def forward(self, normalzed_adjacency_tensor):
-        number_of_nodes = normalzed_adjacency_tensor.shape[1]
-        multi_scale_features = []
-        for i in range(self.order):
-            square_tensor = normalzed_adjacency_tensor[i,:,:].squeeze()
-            thetas = self.weight_matrix[i,:].view(-1)
-            scores = torch.ger(thetas, square_tensor.view(-1)).view(self.number_of_evaluation_points, number_of_nodes, number_of_nodes)
-            non_linear_scores = torch.cos(scores)
-            features = torch.t(torch.mean(non_linear_scores, dim=2))
-            multi_scale_features.append(features)
-        multi_scale_features = torch.cat(tuple(multi_scale_features),dim=1)
-        return multi_scale_features
+    def forward(self, normalized_adjacency_matrix, features):
+        """
+        Doing a forward pass.
+        :param normalized_adjacency_matrix: Normalized adjacency matrix.
+        :param features: Feature matrix.
+        :return base_features: Convolved features.
+        """
+        base_features = spmm(features["indices"], features["values"], features["dimensions"][0],  self.weight_matrix)
+        base_features = torch.nn.functional.dropout(base_features, p = self.dropout_rate, training = self.training)
+        base_features = torch.nn.functional.relu(base_features) + self.bias
+        for iteration in range(self.iterations):
+            base_features = spmm(normalized_adjacency_matrix["indices"], normalized_adjacency_matrix["values"], base_features.shape[0], base_features)
+        return base_features
 
-class SagePoolingLayer(torch.nn.Module):
+class DenseNGCNLayer(torch.nn.Module):
+    """
+    Multi-scale Dense Feature Matrix GCN layer.
+    :param in_channels: Number of features.
+    :param out_channels: Number of filters.
+    :param iterations: Adjacency matrix power order.
+    :param dropout_rate: Dropout value.
+    """
+    def __init__(self, in_channels, out_channels, iterations, dropout_rate):
+        super(DenseNGCNLayer, self).__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.iterations = iterations
+        self.dropout_rate = dropout_rate
+        self.define_parameters()
+        self.init_parameters()
 
-    def __init__(self, args):
-        super(SagePoolingLayer,self).__init__()
-        self.args = args
-        self._setup()
+    def define_parameters(self):
+        """
+        Defining the weight matrices.
+        """
+        self.weight_matrix = torch.nn.Parameter(torch.Tensor(self.in_channels, self.out_channels))
+        self.bias = torch.nn.Parameter(torch.Tensor(self.out_channels))
 
-    def _setup(self):
-        self.fully_connected_1 = torch.nn.Linear(self.args.dense_2_dimensions, self.args.pooling_1_dimensions)
-        self.fully_connected_2 = torch.nn.Linear(self.args.pooling_1_dimensions, self.args.pooling_2_dimensions)
+    def init_parameters(self):
+        """
+        Initializing weights.
+        """
+        torch.nn.init.xavier_uniform_(self.weight_matrix)
+        uniform(self.out_channels,self.bias)
 
-    def forward(self, features):
+    def forward(self, normalized_adjacency_matrix, features):
+        """
+        Doing a forward pass.
+        :param normalized_adjacency_matrix: Normalized adjacency matrix.
+        :param features: Feature matrix.
+        :return base_features: Convolved features.
+        """
+        base_features = torch.mm(features,  self.weight_matrix)
+        base_features = torch.nn.functional.dropout(base_features, p = self.dropout_rate, training = self.training)
+        base_features = torch.nn.functional.relu(base_features) + self.bias
+        for iteration in range(self.iterations):
+            base_features = spmm(normalized_adjacency_matrix["indices"], normalized_adjacency_matrix["values"], base_features.shape[0], base_features)
+        return base_features
 
-        abstract_features = torch.tanh(self.fully_connected_1(features))
-        attention = torch.nn.functional.softmax(self.fully_connected_2(abstract_features),dim=0)
-        graph_embedding = torch.mm(torch.t(attention), features)
-        graph_embedding = graph_embedding.view(1,-1)
-        return graph_embedding
+class ListModule(torch.nn.Module):
+    """
+    Abstract list layer class.
+    """
+    def __init__(self, *args):
+        """
+        Module initializing.
+        """
+        super(ListModule, self).__init__()
+        idx = 0
+        for module in args:
+            self.add_module(str(idx), module)
+            idx += 1
 
+    def __getitem__(self, idx):
+        """
+        Getting the indexed layer.
+        """
+        if idx < 0 or idx >= len(self._modules):
+            raise IndexError('index {} is out of range'.format(idx))
+        it = iter(self._modules.values())
+        for i in range(idx):
+            next(it)
+        return next(it)
 
+    def __iter__(self):
+        """
+        Iterating on the layers.
+        """
+        return iter(self._modules.values())
 
-class CharacteristicFunctionNetwork(torch.nn.Module):
-
-    def __init__(self, args, number_of_labels):
-        super(CharacteristicFunctionNetwork, self).__init__()
-        self.args = args
-        self.number_of_labels = number_of_labels
-        self._setup_model()
-
-    def _setup_model(self):
-        self.characteristic_function_evaluation_layer = LearningToEvaluateLayer(self.args.number_of_evaluation_points, self.args.order)
-        self.dense_layer_1 = torch.nn.Linear(self.args.number_of_evaluation_points*self.args.order,self.args.dense_1_dimensions)
-        self.dense_layer_2 = torch.nn.Linear(self.args.dense_1_dimensions, self.args.dense_2_dimensions)
-        self.pooling_layer_1 = SagePoolingLayer(self.args)
-        self.classification_layer = torch.nn.Linear(self.args.pooling_2_dimensions*self.args.dense_2_dimensions, self.number_of_labels)
-
-    def forward(self, normalized_adjacency_tensor):
-
-        multi_scale_features = self.characteristic_function_evaluation_layer(normalized_adjacency_tensor)
-        node_level_features_1 = torch.relu(self.dense_layer_1(multi_scale_features))
-        node_level_features_2 = torch.relu(self.dense_layer_2(node_level_features_1))
-        graph_level_features = self.pooling_layer_1(node_level_features_2)
-        predictions = self.classification_layer(graph_level_features)
-        predictions = torch.nn.functional.log_softmax(predictions,dim=1)
-        return predictions
+    def __len__(self):
+        """
+        Number of layers.
+        """
+        return len(self._modules)

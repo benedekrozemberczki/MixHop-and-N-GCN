@@ -1,77 +1,79 @@
-
 import argparse
 
 def parameter_parser():
     """
-    A method to parse up command line parameters. By default it learns on the Watts-Strogatz dataset.
-    The default hyperparameters give good results without cross-validation.
+    A method to parse up command line parameters. By default it trains on the Cora dataset.
+    The default hyperparameters give a good quality representation without grid search.
     """
-    parser = argparse.ArgumentParser(description = "Run CapsGNN.")
-	
-    parser.add_argument("--graphs",
+
+    parser = argparse.ArgumentParser(description = "Run MixHop/N-GCN.")
+
+    parser.add_argument("--edge-path",
                         nargs = "?",
-                        default = "./input/watts/",
-	                help = "Training graphs folder.")
+                        default = "./input/cora_edges.csv",
+	                help = "Edge list csv.")
+
+    parser.add_argument("--features-path",
+                        nargs = "?",
+                        default = "./input/cora_features.json",
+	                help = "Features json.")
+
+    parser.add_argument("--target-path",
+                        nargs = "?",
+                        default = "./input/cora_target.csv",
+	                help = "Target classes csv.")
+
+    parser.add_argument("--model",
+                        nargs = "?",
+                        default = "mixhop",
+	                help = "Target classes csv.")
+
+    parser.add_argument("--epochs",
+                        type = int,
+                        default = 2000,
+	                help = "Number of training epochs. Default is 2000.")
 
     parser.add_argument("--seed",
                         type = int,
                         default = 42,
-	                help = "Number of graphs processed per batch. Default is 32.")
+	                help = "Random seed for train-test split. Default is 42.")
 
-    parser.add_argument("--epochs",
+    parser.add_argument("--early-stopping",
                         type = int,
                         default = 10,
-	                help = "Number of training epochs. Default is 100.")
+	                help = "Number of early stopping rounds. Default is 10.")
 
-    parser.add_argument("--batch-size",
+    parser.add_argument("--training-size",
                         type = int,
-                        default = 32,
-	                help = "Number of graphs processed per batch. Default is 32.")
+                        default = 1500,
+	                help = "Training set size. Default is 1500.")
 
-    parser.add_argument("--number_of_evaluation_points",
+    parser.add_argument("--validation-size",
                         type = int,
-                        default = 30,
-	                help = "Number of Graph Convolutional filters. Default is 20.")
+                        default = 500,
+	                help = "Validation set size. Default is 500.")
 
-    parser.add_argument("--order",
-                        type = int,
-                        default = 5,
-	                help = "Number of Graph Convolutional Layers. Default is 2.")
-
-    parser.add_argument("--dense-1-dimensions",
-                        type = int,
-                        default = 20,
-	                help = "Number of Attention Neurons. Default is 20.")
-
-    parser.add_argument("--dense-2-dimensions",
-                        type = int,
-                        default = 10,
-	                help = "Capsule dimensions. Default is 8.")
-
-    parser.add_argument("--pooling-1-dimensions",
-                        type = int,
-                        default = 10,
-	                help = "Number of capsules per layer. Default is 8.")
-
-    parser.add_argument("--pooling-2-dimensions",
-                        type = int,
-                        default = 10,
-	                help = "Number of capsules per layer. Default is 8.")
-
-    parser.add_argument("--weight-decay",
+    parser.add_argument("--dropout",
                         type = float,
-                        default = 10**-4,
-	                help = "Weight decay. Default is 10^-6.")
+                        default = 0.5,
+	                help = "Dropout parameter. Default is 0.5.")
 
     parser.add_argument("--learning-rate",
                         type = float,
                         default = 0.01,
 	                help = "Learning rate. Default is 0.01.")
 
-
-    parser.add_argument("--test-size",
+    parser.add_argument("--lambd",
                         type = float,
-                        default = 0.1,
-	                help = "Reconstruction loss weight. Default is 0.1.")
+                        default = 0.0001,
+	                help = "L2 regularization coefficient. Default is 0.0001.")
+
+    parser.add_argument("--layers",
+                        nargs="+",
+                        type=int,
+                        help = "Layer dimensions separated by space. E.g. 64 64.")
+
+    parser.set_defaults(layers = [32, 32, 32])
     
     return parser.parse_args()
+
