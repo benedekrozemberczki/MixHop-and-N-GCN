@@ -56,7 +56,7 @@ class MixHopNetwork(torch.nn.Module):
 
     def setup_layer_structure(self):
         """
-        Creating the layer structure (3 convolutional layers) and dense final.
+        Creating the layer structure (3 convolutional upper layers, 3 bottom layers) and dense final.
         """
         self.upper_layers = [SparseNGCNLayer(self.feature_number, self.args.layers[i-1], i, self.args.dropout) for i in range(1, self.order+1)]
         self.upper_layers = ListModule(*self.upper_layers)
