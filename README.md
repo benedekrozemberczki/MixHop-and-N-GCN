@@ -70,8 +70,8 @@ Training an N-GCN/MixHop model is handled by the `src/main.py` script which prov
 ```
   --model             STR     Model variant.                 Default is `mixhop`.               
   --seed              INT     Random seed.                   Default is 42.
-  --epochs            INT     Number of training epochs.     Default is 200.
-  --early-stopping    INT     Early stopping rounds.         Default is 5.
+  --epochs            INT     Number of training epochs.     Default is 2000.
+  --early-stopping    INT     Early stopping rounds.         Default is 10.
   --training-size     INT     Training set size.             Default is 1500.
   --validation-size   INT     Validation set size.           Default is 500.
   --learning-rate     FLOAT   Adam learning rate.            Default is 0.01.
