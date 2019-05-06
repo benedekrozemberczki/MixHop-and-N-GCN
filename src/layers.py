@@ -14,7 +14,7 @@ def uniform(size, tensor):
 
 class SparseNGCNLayer(torch.nn.Module):
     """
-    Multi-scale GCN layer.
+    Multi-scale Sparse Feature Matrix GCN layer.
     :param in_channels: Number of features.
     :param out_channels: Number of filters.
     :param iterations: Adjacency matrix power order.
@@ -59,7 +59,7 @@ class SparseNGCNLayer(torch.nn.Module):
 
 class DenseNGCNLayer(torch.nn.Module):
     """
-    Multi-scale GCN layer.
+    Multi-scale Dense Feature Matrix GCN layer.
     :param in_channels: Number of features.
     :param out_channels: Number of filters.
     :param iterations: Adjacency matrix power order.
