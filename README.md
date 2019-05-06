@@ -74,8 +74,9 @@ Training an N-GCN/MixHop model is handled by the `src/main.py` script which prov
   --early-stopping    INT     Early stopping rounds.         Default is 5.
   --training-size     INT     Training set size.             Default is 1500.
   --validation-size   INT     Validation set size.           Default is 500.
-  --learning-rate     FLOAT   Adam learning rate.            Default is 0.01
-  --dropout           FLOAT   Dropout rate value.            Default is 0.5
+  --learning-rate     FLOAT   Adam learning rate.            Default is 0.01.
+  --dropout           FLOAT   Dropout rate value.            Default is 0.5.
+  --lambd             FLOAT   Regularization coefficient.    Default is 0.0001.
   --layers            LST     Layer sizes for model.         Default is [64, 64, 64]. 
 ```
 ### Examples
