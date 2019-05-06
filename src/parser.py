@@ -23,9 +23,14 @@ def parameter_parser():
                         default = "./input/cora_target.csv",
 	                help = "Target classes csv.")
 
+    parser.add_argument("--model",
+                        nargs = "?",
+                        default = "mixhop",
+	                help = "Target classes csv.")
+
     parser.add_argument("--epochs",
                         type = int,
-                        default = 200,
+                        default = 2000,
 	                help = "Number of training epochs. Default is 200.")
 
     parser.add_argument("--seed",
@@ -35,7 +40,7 @@ def parameter_parser():
 
     parser.add_argument("--early-stopping",
                         type = int,
-                        default = 5,
+                        default = 10,
 	                help = "Number of early stopping rounds. Default is 5.")
 
     parser.add_argument("--training-size",
@@ -58,12 +63,17 @@ def parameter_parser():
                         default = 0.01,
 	                help = "Learning rate. Default is 0.01.")
 
+    parser.add_argument("--lambd",
+                        type = float,
+                        default = 0.0001,
+	                help = "L2 regularization coefficient. Default is 0.01.")
+
     parser.add_argument("--layers",
                         nargs="+",
                         type=int,
                         help = "Layer dimensions separated by space. E.g. 64 64.")
 
-    parser.set_defaults(layers = [64, 64, 64])
+    parser.set_defaults(layers = [32, 32, 32])
     
     return parser.parse_args()
 
