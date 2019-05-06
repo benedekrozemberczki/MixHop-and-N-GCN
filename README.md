@@ -83,7 +83,7 @@ The following commands learn a neural network and score on the test set. Trainin
 python src/main.py
 ```
 <p align="center">
-<img style="float: center;" src="ngcn_run.jpg">
+<img style="float: center;" src="mixhop.gif">
 </p>
 
 Training an N-GCN (MixHop) model for a 100 epochs.
