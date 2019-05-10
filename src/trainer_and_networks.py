@@ -16,16 +16,16 @@ class NGCNNetwork(torch.nn.Module):
         self.args = args
         self.feature_number = feature_number
         self.class_number = class_number
-        self.order = len(self.args.layers)
+        self.order = len(self.args.layers_1)
         self.setup_layer_structure()
 
     def setup_layer_structure(self):
         """
         Creating the layer structure (3 convolutional layers) and dense final.
         """
-        self.main_layers = [SparseNGCNLayer(self.feature_number, self.args.layers[i-1], i, self.args.dropout) for i in range(1, self.order+1)]
+        self.main_layers = [SparseNGCNLayer(self.feature_number, self.args.layers_1[i-1], i, self.args.dropout) for i in range(1, self.order+1)]
         self.main_layers = ListModule(*self.main_layers)
-        self.fully_connected = torch.nn.Linear(sum(self.args.layers), self.class_number)
+        self.fully_connected = torch.nn.Linear(sum(self.args.layers_1), self.class_number)
 
     def forward(self, normalized_adjacency_matrix, features):
         """
@@ -49,32 +49,39 @@ class MixHopNetwork(torch.nn.Module):
         super(MixHopNetwork, self).__init__()
         self.args = args
         self.feature_number = feature_number
-        self.abstract_feature_number = sum(self.args.layers)
         self.class_number = class_number
-        self.order = len(self.args.layers)
+        self.calculate_layer_sizes()
         self.setup_layer_structure()
+
+    def calculate_layer_sizes(self):
+        self.abstract_feature_number_1 = sum(self.args.layers_1)
+        self.abstract_feature_number_2 = sum(self.args.layers_2)
+        self.order_1 = len(self.args.layers_1)
+        self.order_2 = len(self.args.layers_2)
 
     def setup_layer_structure(self):
         """
         Creating the layer structure (3 convolutional upper layers, 3 bottom layers) and dense final.
         """
-        self.upper_layers = [SparseNGCNLayer(self.feature_number, self.args.layers[i-1], i, self.args.dropout) for i in range(1, self.order+1)]
+        self.upper_layers = [SparseNGCNLayer(self.feature_number, self.args.layers_1[i-1], i, self.args.dropout) for i in range(1, self.order_1+1)]
         self.upper_layers = ListModule(*self.upper_layers)
-        self.bottom_layers = [DenseNGCNLayer(self.abstract_feature_number, self.args.layers[i-1], i, self.args.dropout) for i in range(1, self.order+1)]
+        self.bottom_layers = [DenseNGCNLayer(self.abstract_feature_number_1, self.args.layers_2[i-1], i, self.args.dropout) for i in range(1, self.order_2+1)]
         self.bottom_layers = ListModule(*self.bottom_layers)
-        self.fully_connected = torch.nn.Linear(self.abstract_feature_number, self.class_number)
+        self.fully_connected = torch.nn.Linear(self.abstract_feature_number_2, self.class_number)
 
     def calculate_group_loss(self):
         """
         Calculating the column losses.
         """
         weight_loss = 0
-        for i in range(self.order):
+        for i in range(self.order_1):
             upper_column_loss = torch.norm(self.upper_layers[i].weight_matrix**2, dim=1)
-            bottom_column_loss = torch.norm(self.bottom_layers[i].weight_matrix**2, dim=1)
             loss_upper = torch.sum(upper_column_loss)
+            weight_loss = weight_loss + self.args.lambd*loss_upper
+        for i in range(self.order_2):
+            bottom_column_loss = torch.norm(self.bottom_layers[i].weight_matrix**2, dim=1)
             loss_bottom = torch.sum(bottom_column_loss)
-            weight_loss = weight_loss + self.args.lambd*(loss_upper+loss_bottom)
+            weight_loss = weight_loss + self.args.lambd*loss_bottom
         return weight_loss
             
 
@@ -85,8 +92,8 @@ class MixHopNetwork(torch.nn.Module):
         :param features: Feature matrix.
         :return predictions: Label predictions.
         """
-        abstract_features_1 = torch.cat([self.upper_layers[i](normalized_adjacency_matrix, features) for i in range(self.order)],dim=1)
-        abstract_features_2 = torch.cat([self.bottom_layers[i](normalized_adjacency_matrix, abstract_features_1) for i in range(self.order)],dim=1)
+        abstract_features_1 = torch.cat([self.upper_layers[i](normalized_adjacency_matrix, features) for i in range(self.order_1)],dim=1)
+        abstract_features_2 = torch.cat([self.bottom_layers[i](normalized_adjacency_matrix, abstract_features_1) for i in range(self.order_2)],dim=1)
         predictions =  torch.nn.functional.log_softmax(self.fully_connected(abstract_features_2),dim=1)
         return predictions
 
@@ -165,6 +172,7 @@ class Trainer(object):
                 accuracy = new_accuracy               
         acc = self.score(self.test_nodes)
         print("\nTest accuracy: " + str(round(acc,4)) )
+       
 
     def score(self, indices):
         """

@@ -68,12 +68,18 @@ def parameter_parser():
                         default = 0.0001,
 	                help = "L2 regularization coefficient. Default is 0.0001.")
 
-    parser.add_argument("--layers",
+    parser.add_argument("--layers-1",
                         nargs="+",
                         type=int,
                         help = "Layer dimensions separated by space. E.g. 64 64.")
 
-    parser.set_defaults(layers = [32, 32, 32])
+    parser.add_argument("--layers-2",
+                        nargs="+",
+                        type=int,
+                        help = "Layer dimensions separated by space. E.g. 64 64.")
+
+    parser.set_defaults(layers_1 = [32, 32, 32])
+    parser.set_defaults(layers_2 = [8, 8, 8])
     
     return parser.parse_args()
 
