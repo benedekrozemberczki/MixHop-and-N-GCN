@@ -77,7 +77,8 @@ Training an N-GCN/MixHop model is handled by the `src/main.py` script which prov
   --learning-rate     FLOAT   Adam learning rate.            Default is 0.01.
   --dropout           FLOAT   Dropout rate value.            Default is 0.5.
   --lambd             FLOAT   Regularization coefficient.    Default is 0.0001.
-  --layers            LST     Layer sizes for model.         Default is [64, 64, 64]. 
+  --layers-1          LST     Layer sizes (upstream).        Default is [32, 32, 32]. 
+  --layers-2          LST     Layer sizes (bottom).          Default is [8, 8, 8]. 
 ```
 ### Examples
 The following commands learn a neural network and score on the test set. Training a model on the default dataset.
