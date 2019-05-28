@@ -1,5 +1,8 @@
 MixHop and N-GCN
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/mixhop-higher-order-graph-convolution/node-classification-on-citeseer)](https://paperswithcode.com/sota/node-classification-on-citeseer?p=mixhop-higher-order-graph-convolution)
+<img src="https://img.shields.io/badge/stars-150+-blue.svg"/>
+<img src="https://img.shields.io/badge/forks-10+-blue.svg"/>
+<img src="https://img.shields.io/badge/license-MIT-blue.svg"/>
 ============================================
 A PyTorch implementation of "MixHop: Higher-Order Graph Convolutional Architectures via Sparsified Neighborhood Mixing" (ICML 2019) and "A Higher-Order Graph Convolutional Layer" (NeurIPS 2018).
 <p align="center">
