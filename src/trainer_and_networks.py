@@ -189,7 +189,6 @@ class Trainer(object):
         acc = self.score(self.test_nodes)
         print("\nTest accuracy: " + str(round(acc,4)) +"\n")
        
-
     def score(self, indices):
         """
         Scoring a neural network.
