@@ -66,12 +66,12 @@ def parameter_parser():
     parser.add_argument("--cut-off",
                         type = float,
                         default = 0.2,
-	                help = "Learning rate. Default is 0.01.")
+	                help = "Weight cut-off. Default is 0.2.")
 
     parser.add_argument("--lambd",
                         type = float,
                         default = 0.0005,
-	                help = "L2 regularization coefficient. Default is 0.0001.")
+	                help = "L2 regularization coefficient. Default is 0.0005.")
 
     parser.add_argument("--layers-1",
                         nargs="+",
