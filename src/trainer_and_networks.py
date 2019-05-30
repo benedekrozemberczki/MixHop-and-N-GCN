@@ -117,6 +117,7 @@ class Trainer(object):
     :param graph: NetworkX graph.
     :param features: Feature sparse matrix.
     :param target: Target vector.
+    :param base_run: Loss calculation behavioural flag.
     """
     def __init__(self, args, graph, features, target, base_run):
         self.args = args
@@ -235,6 +236,3 @@ class Trainer(object):
         self.args.layers_1 = self.layer_sizes["upper"]
         self.args.layers_2 = self.layer_sizes["bottom"]
         return self.args
- 
-        
-
