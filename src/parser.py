@@ -65,8 +65,8 @@ def parameter_parser():
 
     parser.add_argument("--cut-off",
                         type = float,
-                        default = 0.2,
-	                help = "Weight cut-off. Default is 0.2.")
+                        default = 0.1,
+	                help = "Weight cut-off. Default is 0.1.")
 
     parser.add_argument("--lambd",
                         type = float,
