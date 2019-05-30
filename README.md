@@ -82,6 +82,7 @@ Training an N-GCN/MixHop model is handled by the `src/main.py` script which prov
   --lambd             FLOAT   Regularization coefficient.    Default is 0.0005.
   --layers-1          LST     Layer sizes (upstream).        Default is [200, 200, 200]. 
   --layers-2          LST     Layer sizes (bottom).          Default is [200, 200, 200].
+  --cut-off           FLOAT   Norm cut-off for pruning.      Default is 0.1.
   --budget            INT     Architecture neuron budget.    Default is 60.
 ```
 ### Examples
