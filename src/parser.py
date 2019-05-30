@@ -86,7 +86,7 @@ def parameter_parser():
     parser.add_argument("--budget",
                         type = int,
                         default = 60,
-                        help = "Layer dimensions separated by space (bottom). E.g. 64 64.")
+                        help = "Architecture neuron allocation budget. Default is 60.")
 
     parser.set_defaults(layers_1 = [200, 200, 200])
     parser.set_defaults(layers_2 = [200, 200, 200])
