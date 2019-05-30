@@ -203,6 +203,9 @@ class Trainer(object):
         return acc
 
     def evaluate_architecture(self):
+        """
+        Making a choice about the optimal layer sizes.
+        """
         print("The best architecture is:\n")
         self.layer_sizes = dict()
 
