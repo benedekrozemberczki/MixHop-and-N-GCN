@@ -76,12 +76,12 @@ def parameter_parser():
     parser.add_argument("--layers-1",
                         nargs="+",
                         type=int,
-                        help = "Layer dimensions separated by space (top). E.g. 64 64.")
+                        help = "Layer dimensions separated by space (top). E.g. 200 200 200.")
 
     parser.add_argument("--layers-2",
                         nargs="+",
                         type=int,
-                        help = "Layer dimensions separated by space (bottom). E.g. 64 64.")
+                        help = "Layer dimensions separated by space (bottom). E.g. 200 200 200.")
 
     parser.add_argument("--budget",
                         type = int,
