@@ -63,9 +63,14 @@ def parameter_parser():
                         default = 0.01,
 	                help = "Learning rate. Default is 0.01.")
 
+    parser.add_argument("--cut-off",
+                        type = float,
+                        default = 0.2,
+	                help = "Learning rate. Default is 0.01.")
+
     parser.add_argument("--lambd",
                         type = float,
-                        default = 0.0001,
+                        default = 0.0005,
 	                help = "L2 regularization coefficient. Default is 0.0001.")
 
     parser.add_argument("--layers-1",
@@ -78,8 +83,13 @@ def parameter_parser():
                         type=int,
                         help = "Layer dimensions separated by space (bottom). E.g. 64 64.")
 
-    parser.set_defaults(layers_1 = [32, 32, 32])
-    parser.set_defaults(layers_2 = [8, 8, 8])
+    parser.add_argument("--budget",
+                        type = int,
+                        default = 60,
+                        help = "Layer dimensions separated by space (bottom). E.g. 64 64.")
+
+    parser.set_defaults(layers_1 = [200, 200, 200])
+    parser.set_defaults(layers_2 = [200, 200, 200])
     
     return parser.parse_args()
 
