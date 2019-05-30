@@ -13,8 +13,13 @@ def main():
     graph = graph_reader(args.edge_path)
     features = feature_reader(args.features_path)
     target = target_reader(args.target_path)
-    trainer = Trainer(args, graph, features, target)
+    trainer = Trainer(args, graph, features, target, True)
     trainer.fit()
+    if args.model == "mixhop":
+        trainer.evaluate_architecture()
+        args = trainer.reset_architecture()
+        trainer = Trainer(args, graph, features, target, False)
+        trainer.fit()
 
 if __name__ == "__main__":
     main()
