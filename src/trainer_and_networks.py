@@ -75,12 +75,25 @@ class MixHopNetwork(torch.nn.Module):
         """
         weight_loss = 0
         for i in range(self.order_1):
-            upper_column_loss = torch.norm(self.upper_layers[i].weight_matrix**2, dim=1)
+            upper_column_loss = torch.norm(self.upper_layers[i].weight_matrix, dim=0)
             loss_upper = torch.sum(upper_column_loss)
             weight_loss = weight_loss + self.args.lambd*loss_upper
         for i in range(self.order_2):
-            bottom_column_loss = torch.norm(self.bottom_layers[i].weight_matrix**2, dim=1)
+            bottom_column_loss = torch.norm(self.bottom_layers[i].weight_matrix, dim=0)
             loss_bottom = torch.sum(bottom_column_loss)
+            weight_loss = weight_loss + self.args.lambd*loss_bottom
+        return weight_loss
+
+    def calculate_loss(self):
+        """
+        Calculating the losses.
+        """
+        weight_loss = 0
+        for i in range(self.order_1):
+            loss_upper = torch.norm(self.upper_layers[i].weight_matrix)
+            weight_loss = weight_loss + self.args.lambd*loss_upper
+        for i in range(self.order_2):
+            loss_bottom = torch.norm(self.bottom_layers[i].weight_matrix)
             weight_loss = weight_loss + self.args.lambd*loss_bottom
         return weight_loss
             
@@ -105,11 +118,12 @@ class Trainer(object):
     :param features: Feature sparse matrix.
     :param target: Target vector.
     """
-    def __init__(self, args, graph, features, target):
+    def __init__(self, args, graph, features, target, base_run):
         self.args = args
         self.graph = graph
         self.features = features
         self.target = target
+        self.base_run = base_run
         self.setup_features()
         self.train_test_split()
         self.setup_model()
@@ -156,8 +170,10 @@ class Trainer(object):
             self.optimizer.zero_grad()
             prediction = self.model(self.propagation_matrix, self.features)
             loss = torch.nn.functional.nll_loss(prediction[self.train_nodes], self.target[self.train_nodes])
-            if self.args.model == "mixhop":
+            if self.args.model == "mixhop" and self.base_run == True:
                 loss = loss + self.model.calculate_group_loss()
+            elif self.args.model == "mixhop" and self.base_run == False:
+                loss = loss + self.model.calculate_loss()
             loss.backward()
             self.optimizer.step()
             new_accuracy = self.score(self.validation_nodes)
@@ -171,7 +187,7 @@ class Trainer(object):
                 no_improvement = 0
                 accuracy = new_accuracy               
         acc = self.score(self.test_nodes)
-        print("\nTest accuracy: " + str(round(acc,4)) )
+        print("\nTest accuracy: " + str(round(acc,4)) +"\n")
        
 
     def score(self, indices):
@@ -185,3 +201,35 @@ class Trainer(object):
         correct = prediction[indices].eq(self.target[indices]).sum().item()
         acc = correct / indices.shape[0]
         return acc
+
+    def evaluate_architecture(self):
+        print("The best architecture is:\n")
+        self.layer_sizes = dict()
+
+        self.layer_sizes["upper"] = []
+
+        for layer in self.model.upper_layers:
+            norms = torch.norm(layer.weight_matrix**2, dim=0)
+            norms = norms[norms<self.args.cut_off]
+            self.layer_sizes["upper"].append(norms.shape[0])
+
+        self.layer_sizes["bottom"] = []
+
+        for layer in self.model.bottom_layers:
+            norms = torch.norm(layer.weight_matrix**2, dim=0)
+            norms = norms[norms<self.args.cut_off]
+            self.layer_sizes["bottom"].append(norms.shape[0])
+
+        self.layer_sizes["upper"] = [int(self.args.budget*layer_size/sum(self.layer_sizes["upper"]))  for layer_size in self.layer_sizes["upper"]]
+        self.layer_sizes["bottom"] = [int(self.args.budget*layer_size/sum(self.layer_sizes["bottom"]))  for layer_size in self.layer_sizes["bottom"]]
+        print("Layer 1.: "+str(tuple(self.layer_sizes["upper"])))
+        print("Layer 2.: "+str(tuple(self.layer_sizes["bottom"])))
+
+    def reset_architecture(self):
+        print("\nResetting the architecture.\n")
+        self.args.layers_1 = self.layer_sizes["upper"]
+        self.args.layers_2 = self.layer_sizes["bottom"]
+        return self.args
+ 
+        
+
