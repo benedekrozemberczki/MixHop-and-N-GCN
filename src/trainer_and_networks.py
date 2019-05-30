@@ -226,6 +226,9 @@ class Trainer(object):
         print("Layer 2.: "+str(tuple(self.layer_sizes["bottom"])))
 
     def reset_architecture(self):
+        """
+        Changing the layer sizes.
+        """
         print("\nResetting the architecture.\n")
         self.args.layers_1 = self.layer_sizes["upper"]
         self.args.layers_2 = self.layer_sizes["bottom"]
