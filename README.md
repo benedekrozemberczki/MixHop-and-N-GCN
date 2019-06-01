@@ -23,6 +23,8 @@ This repository provides a PyTorch implementation of MixHop and N-GCN as describ
 > NeurIPS, 2018.
 > [[Paper]](http://sami.haija.org/papers/high-order-gc-layer.pdf)
 
+The original TensorFlow implementation is available [[here]](https://github.com/samihaija/mixhop).
+
 ### Requirements
 The codebase is implemented in Python 3.5.2. package versions used for development are just below.
 ```
