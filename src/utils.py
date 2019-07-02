@@ -62,9 +62,9 @@ def create_adjacency_matrix(graph):
     :param graph: NetworkX object.
     :return A: Adjacency matrix.
     """
-    index_1 = [edge[0] for edge in graph.edges()]
-    index_2 = [edge[1] for edge in graph.edges()]
-    values = [1 for edge in graph.edges()]
+    index_1 = [edge[0] for edge in graph.edges()] + [edge[1] for edge in graph.edges()]
+    index_2 = [edge[1] for edge in graph.edges()] + [edge[0] for edge in graph.edges()]
+    values = [1 for index in index_1]
     node_count = max(max(index_1)+1,max(index_2)+1)
     A = sparse.coo_matrix((values, (index_1,index_2)),shape=(node_count,node_count),dtype=np.float32)
     return A
