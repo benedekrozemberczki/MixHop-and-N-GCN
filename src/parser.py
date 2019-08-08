@@ -5,7 +5,6 @@ def parameter_parser():
     A method to parse up command line parameters. By default it trains on the Cora dataset.
     The default hyperparameters give a good quality representation without grid search.
     """
-
     parser = argparse.ArgumentParser(description = "Run MixHop/N-GCN.")
 
     parser.add_argument("--edge-path",
@@ -92,4 +91,3 @@ def parameter_parser():
     parser.set_defaults(layers_2 = [200, 200, 200])
     
     return parser.parse_args()
-
