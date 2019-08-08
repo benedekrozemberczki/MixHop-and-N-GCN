@@ -1,6 +1,6 @@
 import torch
-from trainer_and_networks import Trainer
 from parser import parameter_parser
+from trainer_and_networks import Trainer
 from utils import tab_printer, graph_reader, feature_reader, target_reader
 
 def main():
