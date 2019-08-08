@@ -97,7 +97,6 @@ class MixHopNetwork(torch.nn.Module):
             weight_loss = weight_loss + self.args.lambd*loss_bottom
         return weight_loss
             
-
     def forward(self, normalized_adjacency_matrix, features):
         """
         Forward pass.
