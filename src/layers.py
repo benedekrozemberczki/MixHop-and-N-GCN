@@ -34,12 +34,14 @@ class SparseNGCNLayer(torch.nn.Module):
         Defining the weight matrices.
         """
         self.weight_matrix = torch.nn.Parameter(torch.Tensor(self.in_channels, self.out_channels))
+        self.bias = torch.nn.Parameter(torch.Tensor(1, self.out_channels))
 
     def init_parameters(self):
         """
         Initializing weights.
         """
         torch.nn.init.xavier_uniform_(self.weight_matrix)
+        torch.nn.init.xavier_uniform_(self.bias)
 
     def forward(self, normalized_adjacency_matrix, features):
         """
@@ -48,7 +50,7 @@ class SparseNGCNLayer(torch.nn.Module):
         :param features: Feature matrix.
         :return base_features: Convolved features.
         """
-        base_features = spmm(features["indices"], features["values"], features["dimensions"][0],  self.weight_matrix)
+        base_features = spmm(features["indices"], features["values"], features["dimensions"][0],  self.weight_matrix) + self.bias
         base_features = torch.nn.functional.dropout(base_features, p = self.dropout_rate, training = self.training)
         base_features = torch.nn.functional.relu(base_features)
         for iteration in range(self.iterations-1):
@@ -77,12 +79,14 @@ class DenseNGCNLayer(torch.nn.Module):
         Defining the weight matrices.
         """
         self.weight_matrix = torch.nn.Parameter(torch.Tensor(self.in_channels, self.out_channels))
+        self.bias = torch.nn.Parameter(torch.Tensor(1, self.out_channels))
 
     def init_parameters(self):
         """
         Initializing weights.
         """
         torch.nn.init.xavier_uniform_(self.weight_matrix)
+        torch.nn.init.xavier_uniform_(self.bias)
 
     def forward(self, normalized_adjacency_matrix, features):
         """
@@ -95,6 +99,7 @@ class DenseNGCNLayer(torch.nn.Module):
         base_features = torch.nn.functional.dropout(base_features, p = self.dropout_rate, training = self.training)
         for iteration in range(self.iterations-1):
             base_features = spmm(normalized_adjacency_matrix["indices"], normalized_adjacency_matrix["values"], base_features.shape[0], base_features)
+        base_features = base_features  + self.bias
         return base_features
 
 class ListModule(torch.nn.Module):
