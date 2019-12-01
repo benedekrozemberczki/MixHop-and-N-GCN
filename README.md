@@ -42,10 +42,10 @@ torch             0.4.1
 torch-sparse      0.2.2
 ```
 ### Datasets
-
-The code takes the **edge list** of the graph in a csv file. Every row indicates an edge between two nodes separated by a comma. The first row is a header. Nodes should be indexed starting with 0. A sample graph for `Cora` is included in the  `input/` directory. In addition to the edgelist there is a JSON file with the sparse features and a csv with the target variable.
-
-The **feature matrix** is a sparse binary one it is stored as a json. Nodes are keys of the json and feature indices are the values. For each node feature column ids are stored as elements of a list. The feature matrix is structured as:
+<p align="justify">
+The code takes the **edge list** of the graph in a csv file. Every row indicates an edge between two nodes separated by a comma. The first row is a header. Nodes should be indexed starting with 0. A sample graph for `Cora` is included in the  `input/` directory. In addition to the edgelist there is a JSON file with the sparse features and a csv with the target variable.</p>
+<p align="justify">
+The **feature matrix** is a sparse binary one it is stored as a json. Nodes are keys of the json and feature indices are the values. For each node feature column ids are stored as elements of a list. The feature matrix is structured as:</p>
 
 ```javascript
 { 0: [0, 1, 38, 1968, 2000, 52727],
@@ -54,7 +54,8 @@ The **feature matrix** is a sparse binary one it is stored as a json. Nodes are 
   ...
   n: [2018, 10000]}
 ```
-The **target vector** is a csv with two columns and headers, the first contains the node identifiers the second the targets. This csv is sorted by node identifiers and the target column contains the class meberships indexed from zero. 
+<p align="justify">
+The **target vector** is a csv with two columns and headers, the first contains the node identifiers the second the targets. This csv is sorted by node identifiers and the target column contains the class meberships indexed from zero. </p>
 
 | **NODE ID**| **Target** |
 | --- | --- |
@@ -66,7 +67,8 @@ The **target vector** is a csv with two columns and headers, the first contains 
 | n | 3 |
 
 ### Options
-Training an N-GCN/MixHop model is handled by the `src/main.py` script which provides the following command line arguments.
+<p align="justify">
+Training an N-GCN/MixHop model is handled by the `src/main.py` script which provides the following command line arguments.</p>
 
 #### Input and output options
 ```
@@ -91,7 +93,8 @@ Training an N-GCN/MixHop model is handled by the `src/main.py` script which prov
   --budget            INT     Architecture neuron budget.    Default is 60.
 ```
 ### Examples
-The following commands learn a neural network and score on the test set. Training a model on the default dataset.
+<p align="justify">
+The following commands learn a neural network and score on the test set. Training a model on the default dataset.</p>
 ```
 python src/main.py
 ```
