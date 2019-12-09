@@ -34,8 +34,9 @@ class NGCNNetwork(torch.nn.Module):
         :param features: Feature matrix.
         :return predictions: Label predictions.
         """
-        abstract_features = torch.cat([self.main_layers[i](normalized_adjacency_matrix, features) for i in range(self.order)],dim=1)
-        predictions =  torch.nn.functional.log_softmax(self.fully_connected(abstract_features),dim=1)
+        abstract_features = [self.main_layers[i](normalized_adjacency_matrix, features) for i in range(self.order)]
+        abstract_features = torch.cat(abstract_features, dim=1)
+        predictions = torch.nn.functional.log_softmax(self.fully_connected(abstract_features), dim=1)
         return predictions
 
 class MixHopNetwork(torch.nn.Module):
@@ -104,9 +105,9 @@ class MixHopNetwork(torch.nn.Module):
         :param features: Feature matrix.
         :return predictions: Label predictions.
         """
-        abstract_features_1 = torch.cat([self.upper_layers[i](normalized_adjacency_matrix, features) for i in range(self.order_1)],dim=1)
-        abstract_features_2 = torch.cat([self.bottom_layers[i](normalized_adjacency_matrix, abstract_features_1) for i in range(self.order_2)],dim=1)
-        predictions =  torch.nn.functional.log_softmax(self.fully_connected(abstract_features_2),dim=1)
+        abstract_features_1 = torch.cat([self.upper_layers[i](normalized_adjacency_matrix, features) for i in range(self.order_1)], dim=1)
+        abstract_features_2 = torch.cat([self.bottom_layers[i](normalized_adjacency_matrix, abstract_features_1) for i in range(self.order_2)], dim=1)
+        predictions = torch.nn.functional.log_softmax(self.fully_connected(abstract_features_2), dim=1)
         return predictions
 
 class Trainer(object):
@@ -156,7 +157,7 @@ class Trainer(object):
             self.model = MixHopNetwork(self.args, self.feature_number, self.class_number)
         else:
             self.model = NGCNNetwork(self.args, self.feature_number, self.class_number)
-            
+
     def fit(self):
         """
         Fitting a neural network with early stopping.
@@ -166,7 +167,7 @@ class Trainer(object):
         epochs = trange(self.args.epochs, desc="Accuracy")
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.args.learning_rate)
         self.model.train()
-        for epoch in epochs:
+        for _ in epochs:
             self.optimizer.zero_grad()
             prediction = self.model(self.propagation_matrix, self.features)
             loss = torch.nn.functional.nll_loss(prediction[self.train_nodes], self.target[self.train_nodes])
@@ -177,7 +178,7 @@ class Trainer(object):
             loss.backward()
             self.optimizer.step()
             new_accuracy = self.score(self.validation_nodes)
-            epochs.set_description("Validation Accuracy: %g" % round(new_accuracy,4))
+            epochs.set_description("Validation Accuracy: %g" % round(new_accuracy, 4))
             if new_accuracy < accuracy:
                 no_improvement = no_improvement + 1
                 if no_improvement == self.args.early_stopping:
@@ -185,10 +186,10 @@ class Trainer(object):
                     break
             else:
                 no_improvement = 0
-                accuracy = new_accuracy               
+                accuracy = new_accuracy
         acc = self.score(self.test_nodes)
-        print("\nTest accuracy: " + str(round(acc,4)) +"\n")
-       
+        print("\nTest accuracy: " + str(round(acc, 4)) +"\n")
+
     def score(self, indices):
         """
         Scoring a neural network.
@@ -212,14 +213,14 @@ class Trainer(object):
 
         for layer in self.model.upper_layers:
             norms = torch.norm(layer.weight_matrix**2, dim=0)
-            norms = norms[norms<self.args.cut_off]
+            norms = norms[norms < self.args.cut_off]
             self.layer_sizes["upper"].append(norms.shape[0])
 
         self.layer_sizes["bottom"] = []
 
         for layer in self.model.bottom_layers:
             norms = torch.norm(layer.weight_matrix**2, dim=0)
-            norms = norms[norms<self.args.cut_off]
+            norms = norms[norms < self.args.cut_off]
             self.layer_sizes["bottom"].append(norms.shape[0])
 
         self.layer_sizes["upper"] = [int(self.args.budget*layer_size/sum(self.layer_sizes["upper"]))  for layer_size in self.layer_sizes["upper"]]

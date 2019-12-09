@@ -1,3 +1,5 @@
+"""NGCN and DenseNGCN layers."""
+
 import math
 import torch
 from torch_sparse import spmm
@@ -50,11 +52,21 @@ class SparseNGCNLayer(torch.nn.Module):
         :param features: Feature matrix.
         :return base_features: Convolved features.
         """
-        base_features = spmm(features["indices"], features["values"], features["dimensions"][0],  self.weight_matrix) + self.bias
-        base_features = torch.nn.functional.dropout(base_features, p = self.dropout_rate, training = self.training)
+        base_features = spmm(features["indices"], features["values"],
+                             features["dimensions"][0], self.weight_matrix)
+
+        base_features = base_features + self.bias
+
+        base_features = torch.nn.functional.dropout(base_features,
+                                                    p=self.dropout_rate,
+                                                    training=self.training)
+
         base_features = torch.nn.functional.relu(base_features)
-        for iteration in range(self.iterations-1):
-            base_features = spmm(normalized_adjacency_matrix["indices"], normalized_adjacency_matrix["values"], base_features.shape[0], base_features)
+        for _ in range(self.iterations-1):
+            base_features = spmm(normalized_adjacency_matrix["indices"],
+                                 normalized_adjacency_matrix["values"],
+                                 base_features.shape[0],
+                                 base_features)
         return base_features
 
 class DenseNGCNLayer(torch.nn.Module):
@@ -95,11 +107,16 @@ class DenseNGCNLayer(torch.nn.Module):
         :param features: Feature matrix.
         :return base_features: Convolved features.
         """
-        base_features = torch.mm(features,  self.weight_matrix)
-        base_features = torch.nn.functional.dropout(base_features, p = self.dropout_rate, training = self.training)
-        for iteration in range(self.iterations-1):
-            base_features = spmm(normalized_adjacency_matrix["indices"], normalized_adjacency_matrix["values"], base_features.shape[0], base_features)
-        base_features = base_features  + self.bias
+        base_features = torch.mm(features, self.weight_matrix)
+        base_features = torch.nn.functional.dropout(base_features,
+                                                    p=self.dropout_rate,
+                                                    training=self.training)
+        for _ in range(self.iterations-1):
+            base_features = spmm(normalized_adjacency_matrix["indices"],
+                                 normalized_adjacency_matrix["values"],
+                                 base_features.shape[0],
+                                 base_features)
+        base_features = base_features + self.bias
         return base_features
 
 class ListModule(torch.nn.Module):
