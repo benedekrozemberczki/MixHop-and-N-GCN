@@ -52,8 +52,10 @@ class SparseNGCNLayer(torch.nn.Module):
         :param features: Feature matrix.
         :return base_features: Convolved features.
         """
-        base_features = spmm(features["indices"], features["values"],
-                             features["dimensions"][0], self.weight_matrix)
+        feature_count, _ = torch.max(features["indices"],dim=1)
+        feature_count = feature_count + 1
+        base_features = spmm(features["indices"], features["values"], feature_count[0],
+                             feature_count[1], self.weight_matrix)
 
         base_features = base_features + self.bias
 
@@ -65,6 +67,7 @@ class SparseNGCNLayer(torch.nn.Module):
         for _ in range(self.iterations-1):
             base_features = spmm(normalized_adjacency_matrix["indices"],
                                  normalized_adjacency_matrix["values"],
+                                 base_features.shape[0],
                                  base_features.shape[0],
                                  base_features)
         return base_features
@@ -114,6 +117,7 @@ class DenseNGCNLayer(torch.nn.Module):
         for _ in range(self.iterations-1):
             base_features = spmm(normalized_adjacency_matrix["indices"],
                                  normalized_adjacency_matrix["values"],
+                                 base_features.shape[0],
                                  base_features.shape[0],
                                  base_features)
         base_features = base_features + self.bias
