@@ -38,8 +38,8 @@ pandas            0.23.4
 texttable         1.5.0
 scipy             1.1.0
 argparse          1.1.0
-torch             0.4.1
-torch-sparse      0.2.2
+torch             1.1.0
+torch-sparse      0.3.0
 ```
 ### Datasets
 <p align="justify">
