@@ -95,26 +95,27 @@ Training an N-GCN/MixHop model is handled by the `src/main.py` script which prov
 ### Examples
 <p align="justify">
 The following commands learn a neural network and score on the test set. Training a model on the default dataset.</p>
-```
-python src/main.py
+
+```sh
+$ python src/main.py
 ```
 <p align="center">
 <img style="float: center;" src="mixhop.gif">
 </p>
 
 Training a MixHop model for a 100 epochs.
-```
-python src/main.py --epochs 100
+```sh
+$ python src/main.py --epochs 100
 ```
 Increasing the learning rate and the dropout.
-```
-python src/main.py --learning-rate 0.1 --dropout 0.9
+```sh
+$ python src/main.py --learning-rate 0.1 --dropout 0.9
 ```
 Training a model with diffusion order 2:
-```
-python src/main.py --layers 64 64
+```sh
+$ python src/main.py --layers 64 64
 ```
 Training an N-GCN model:
-```
-python src/main.py --model ngcn
+```sh
+$ python src/main.py --model ngcn
 ```
