@@ -120,3 +120,10 @@ Training an N-GCN model:
 ```sh
 $ python src/main.py --model ngcn
 ```
+
+
+--------------------------------------------------------------------------------
+
+**License**
+
+- [GNU](https://github.com/benedekrozemberczki/MixHop-and-N-GCN/blob/master/LICENSE)
