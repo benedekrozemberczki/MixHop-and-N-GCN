@@ -3,7 +3,7 @@ MixHop and N-GCN
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/mixhop-higher-order-graph-convolution/node-classification-on-citeseer)](https://paperswithcode.com/sota/node-classification-on-citeseer?p=mixhop-higher-order-graph-convolution)
 [![Arxiv](https://img.shields.io/badge/ArXiv-1905.00067-orange.svg?color=blue)](https://arxiv.org/abs/1905.00067)
 [![codebeat badge](https://codebeat.co/badges/d6075a37-a3c8-4a04-b9c6-5d31898496e6)](https://codebeat.co/projects/github-com-benedekrozemberczki-mixhop-and-n-gcn-master)
- [![repo size](https://img.shields.io/github/repo-size/benedekrozemberczki/MixHop-and-N-GCN.svg)](https://github.com/benedekrozemberczki/MixHop-and-N-GCN/archive/master.zip)
+ [![repo size](https://img.shields.io/github/repo-size/benedekrozemberczki/MixHop-and-N-GCN.svg)](https://github.com/benedekrozemberczki/MixHop-and-N-GCN/archive/master.zip)⠀
  
 A PyTorch implementation of "MixHop: Higher-Order Graph Convolutional Architectures via Sparsified Neighborhood Mixing" (ICML 2019) and "A Higher-Order Graph Convolutional Layer" (NeurIPS 2018).
 <p align="center">
