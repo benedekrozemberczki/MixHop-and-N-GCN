@@ -5,7 +5,7 @@ MixHop and N-GCN
 [![codebeat badge](https://codebeat.co/badges/d6075a37-a3c8-4a04-b9c6-5d31898496e6)](https://codebeat.co/projects/github-com-benedekrozemberczki-mixhop-and-n-gcn-master)
  [![repo size](https://img.shields.io/github/repo-size/benedekrozemberczki/MixHop-and-N-GCN.svg)](https://github.com/benedekrozemberczki/MixHop-and-N-GCN/archive/master.zip)⠀[![benedekrozemberczki](https://img.shields.io/twitter/follow/benrozemberczki?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=benrozemberczki)
  
-A PyTorch implementation of "MixHop: Higher-Order Graph Convolutional Architectures via Sparsified Neighborhood Mixing" (ICML 2019) and "A Higher-Order Graph Convolutional Layer" (NeurIPS 2018).
+A **PyTorch** implementation of "MixHop: Higher-Order Graph Convolutional Architectures via Sparsified Neighborhood Mixing" (ICML 2019) and "A Higher-Order Graph Convolutional Layer" (NeurIPS 2018).
 <p align="center">
   <img width="800" src="mixhop1.jpg">
 </p>
