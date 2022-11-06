@@ -10,7 +10,7 @@ A **PyTorch** implementation of "MixHop: Higher-Order Graph Convolutional Archit
   <img width="800" src="mixhop1.jpg">
 </p>
 
---------------------------
+---------------------
 
 ### Abstract
 
